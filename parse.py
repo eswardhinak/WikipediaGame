@@ -5,6 +5,7 @@
 import os
 import findPaths
 
+print "Beginning Program....\n"
 str_begin=raw_input("Enter start point: ")
 str_end=raw_input("Enter end point: ")
 str_begin.replace(' ', '_')
