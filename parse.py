@@ -1,7 +1,7 @@
-#Name: parse.py
-#Description: This file parses Wikipedia page and stores all 
-#	the links, outputting them to links.txt
-
+'''
+Name: parse.py
+Description: This file gets the start and end articles and passes them to findPaths module
+'''
 import os
 import findPaths
 

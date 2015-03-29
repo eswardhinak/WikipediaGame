@@ -1,5 +1,8 @@
-#Name: findPaths
-#Description: This module will check each Path of the Wikipedia tree to find a path to the desired article
+'''
+Name: findPaths
+Description: This module does the searching for the end article using a BFS.
+'''
+
 import re
 from lxml import html
 import requests
@@ -8,25 +11,26 @@ import Queue
 import WikiNode
 import time 
 
-visited = Set([])
-web  = dict({})
-netTime = 0
-#function called and sets up the BFS approach
+visited = Set([]) #set of visited articles
+web  = dict({})   #hashtable of visited WikiNodes
+
+'''
+Name: findPaths(current_article, end_article)
+	current_article -- starting article
+	end_article -- destination article
+Description: Breadth first search to find the destination article 
+'''
 def findPaths(current_article, end_article):
 	global web
 	current_article = current_article.replace(' ', '_')
 	end_article = end_article.replace(' ', '_')
-	print current_article
-	print end_article
 	wiki_link_start = "http://en.wikipedia.org/wiki/" + current_article
-	#end_article = "http://en.wikipedia.org/wiki/" + end_article
 	page=requests.get(wiki_link_start)
 	tree=html.fromstring(page.text)
 	links=tree.xpath('//a/@href')
 	start_art_wiki = "/wiki/" + current_article		
 	global visited
 	visited.add(start_art_wiki)
-
 	end_art_wiki = "/wiki/" + end_article
 	if end_art_wiki in links:
 		print "Found."
@@ -47,26 +51,21 @@ def findPaths(current_article, end_article):
 			j=j+1
 	start = WikiNode.WikiNode("-1", start_art_wiki)
 	web[start_art_wiki] = start
-	#end = WikiNode("-1", end_art_wiki)
-
 	BFS(links_Queue, end_article)
 
 
-#function that does breadth first search
+#breadth first search
 def BFS(queue_links, end_article):
 	global visited
 	global web
 	end_article = "/wiki/" + end_article
-	#print end_article
 	while not queue_links.empty():
 		current_article = queue_links.get()
 		print current_article + " " + end_article
-		#print "--->"
 		if (current_article == end_article):
 			print "Found."
 			return
 		else:
-			#construct http:// string from current link
 			search_link = "http://en.wikipedia.org" + current_article
 			try:
 				page = requests.get(search_link)
@@ -91,8 +90,8 @@ def BFS(queue_links, end_article):
 					j=j+1
 				else: 
 					j=j+1
-		#time.sleep(.1)
-					
+
+#Function to use to get page in bad connection situations					
 def getPage(search_link):
 	try:
 		page = requests.get(search_link)
@@ -101,7 +100,7 @@ def getPage(search_link):
 		time.sleep(1)
 		return getPage(search_link)
 
-#function that checks if a links ivalid
+#function that uses WikiNodes to print the path taken once destination article is found
 def printPath(end_article, article):
 	global web
 	currNode = web[article]
@@ -120,7 +119,7 @@ def printPath(end_article, article):
 
 	print end_article
 
-
+#function that checks if a given link is valid
 def isValidLink(link):
 	global visited
 	if (link in visited):
@@ -150,11 +149,9 @@ def isValidLink(link):
 	bad_strings.append("Portal")
 	bad_strings.append("Talk:")
 	bad_strings.append("index.php")
-	#bad_strings.append("")
 	for bad in bad_strings:
 		if bad in link:
 			return False
-	#search for substrings like disambiguation and protection policy
 
 	return True
 
