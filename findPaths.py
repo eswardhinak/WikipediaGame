@@ -130,13 +130,31 @@ def BFS(queue_links, end_article, end_article_spaces):
 			tree = html.fromstring(page.text)
 			allinks = tree.xpath('//a/@href')
 			links = tree.xpath('//p//a/@href')
-			textLinks = tree.xpath('//a/text()')
+			textLinks = tree.xpath('//p//a/text()')
 			if end_article_spaces in textLinks:
+				print end_article_spaces
+				for item in textLinks:
+					print item
+				for item in allinks:
+					print item
+				'''f = open('final_article', 'w')
+				for item in textLinks:
+					f.write(item)
+				f.close()'''
 				print "Found."
 				print "_______"
 				printPath(end_article, current_article)
 				return
-			if end_article in allinks:
+			if end_article in links:
+				print end_article_spaces
+				for item in textLinks:
+					print item
+				for item in allinks:
+					print item
+				'''f = open('final_article', 'w')
+				for item in textLinks:
+					f.write(item)
+				f.close()'''
 				print "Found."
 				print "_______"
 				printPath(end_article, current_article)
