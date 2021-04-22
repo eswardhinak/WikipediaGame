@@ -1,6 +1,6 @@
 # WikipediaGame
 
-You can play with a live version of this at my blog at https://singlethreaded.me/wikipedia-game. It'll run your query on a server, so you don't need to download this repo at all.
+You can play with an updated and live version of this at my blog at https://singlethreaded.me/wikipedia-game. It'll run your query on a server, so you don't need to download this repo at all.
 
 
 This will try and find the shortest path between two wikipedia articles. 
